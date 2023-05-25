@@ -6,24 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateDocumentsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            $table->string('filename');
+            $table->string('file_path');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('documents');
     }
-};
+}
+

@@ -21,7 +21,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('documents', DocumentController::class)->except(['edit', 'update', 'destroy']);
-Route::get('documents/{id}/download', [DocumentController::class, 'download'])->name('documents.donwload');
 
+Route::get('/', [DocumentController::class, 'index'])->name('documents.index');
+Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
+Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
 

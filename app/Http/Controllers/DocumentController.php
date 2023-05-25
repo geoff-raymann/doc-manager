@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
-    //Implementing Document COntroller
-    
     public function index()
     {
-        $documents = Document::all();
+        $documents = Document::latest()->get();
 
-        return view('documents.index', compact('documents'));
-
+        return view('documents.index', ['documents'=> $documents]);
     }
 
     public function create()
@@ -27,25 +23,19 @@ class DocumentController extends Controller
     {
         $request->validate([
             'description' => 'required',
-            'file' => 'required|file'
+            'file' => 'required|file|mimes:doc,docx,pdf,ppt,pptx,jpg,png|max:2048',
         ]);
 
         $file = $request->file('file');
-        $filename = $file->getClientOriginalName();
-        $file->storeAs('documents', $filename);
+        $filePath = $file->store('documents');
 
         Document::create([
             'description' => $request->input('description'),
-            'filename' => $filename
+            'file_path' => $filePath,
         ]);
 
-        return redirect()->route('documents.index')->with('success', 'Document uploaded successfully.');
-
-    }
-
-    public function download($id)
-    {
-        $document = Document::findOrFail($id);
-        return Storage::download('documents/' . $document->filename);
+        return redirect()->route('documents.index')
+            ->with('success', 'Document uploaded successfully.');
     }
 }
+
