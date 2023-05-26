@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Models\Document;
 use Illuminate\Http\Request;
+
 
 class DocumentController extends Controller
 {
@@ -37,5 +39,25 @@ class DocumentController extends Controller
         return redirect()->route('documents.index')
             ->with('success', 'Document uploaded successfully.');
     }
+
+    public function download($id)
+    {
+        $document = Document::findOrFail($id);
+        $filePath = storage_path('app/' . $document->file_path);
+
+        return response()->download($filePath, $document->id);
+    }
+
+
+    public function destroy($id)
+    {
+        $document = Document::findOrFail($id);
+        Storage::delete($document->file_path);
+        $document->delete();
+
+        return redirect()->route('documents.index')->with('success', 'Document deleted successfully.');
+    }
+
+
 }
 

@@ -24,5 +24,12 @@ Route::get('/', function () {
 
 Route::get('/', [DocumentController::class, 'index'])->name('documents.index');
 Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
+Route::get('/documents/{id}/download', [DocumentController::class, 'download'])->name('documents.download');
+Route::delete('/documents/{id}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+
+
+
+
+
 

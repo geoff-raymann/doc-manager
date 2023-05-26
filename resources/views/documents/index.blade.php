@@ -23,10 +23,14 @@
                     <tr>
                         <td>{{ $document->description }}</td>
                         <td>
-                            <a href="{{ asset($document->file_path) }}" target="_blank">Download</a>
+                            <a href="{{ route('documents.download', $document->id) }}" target="_blank">Download</a>
                         </td>
                         <td>
-                            <!-- Add delete functionality if needed -->
+                            <form action="{{ route('documents.destroy', $document->id) }}" method="POST" style="display: inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @empty
@@ -38,3 +42,4 @@
         </table>
     </div>
 @endsection
+
